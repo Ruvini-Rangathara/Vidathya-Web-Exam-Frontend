@@ -47,7 +47,7 @@ const Navbar = () => {
 
                     <div className={'flex justify-center items-center'}>
                         <div className={'bg-[#E8D2E2] w-40 h-40 rounded-2xl p-4'}>
-                            <p className={'text-xs text-center'}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            <p className={'text-xs text-center text-[gray]'}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Aliquam blanditiis consequatur, dolor dolore dolorem,</p>
                         </div>
                     </div>
