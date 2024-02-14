@@ -8,7 +8,7 @@ const search = (e: any, name: string) => {
 }
 const Dashboard = () => {
     return (
-        <div className={'w-[85%] top-0 ml-[15%] transparent flex flex-col'}>
+        <div className={'w-[83%] top-0 ml-[17%] transparent flex flex-col'}>
             <div className={' w-[100%] h-[8vh] bg-[#E8D2E2] mx-auto shadow-md mb-2 flex justify-between'}>
                 <div className={'ml-10 mt-1 flex'}>
                     <Input type={'text'} name={'search'} optional={true} callBack={search}/>
@@ -29,22 +29,22 @@ const Dashboard = () => {
             </div>
             <div className={'text-[#772460] mx-auto w-[80%] h-[15vh] flex justify-center items-center'}>
                 <div
-                    className={'w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
+                    className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
                     <label className={'text-[21px] '}>134</label>
                     <label className={'text-[25px]'}>Students</label>
                 </div>
                 <div
-                    className={'w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
+                    className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
                     <label className={'text-[21px] '}>13</label>
                     <label className={'text-[25px]'}>Teachers</label>
                 </div>
                 <div
-                    className={'w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
+                    className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
                     <label className={'text-[21px] '}>34</label>
                     <label className={'text-[25px]'}>Exams</label>
                 </div>
                 <div
-                    className={'w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
+                    className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
                     <label className={'text-[21px] '}>34</label>
                     <label className={'text-[25px]'}>Exams</label>
                 </div>
@@ -77,7 +77,7 @@ const Dashboard = () => {
 
             </div>
 
-            <div className={'w-[100%] h-[60vh] flex justify-around mt-2'}>
+            <div className={'w-[100%] h-[60vh] flex justify-around mt-6'}>
                 <div className={'w-[45%] h-[90%] bg-[white] rounded-2xl shadow-md pt-6'}>
                     <Chart/>
                 </div>
@@ -86,8 +86,12 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <hr className={'w-[90%] mx-auto mb-6'}/>
-            <div></div>
+            <div>
+                <div className={'pb-4 pt-4 w-[100%] h-[10vh] bg-[#E8D2E2] mx-auto shadow-md flex flex-col justify-center items-center'}>
+                    <label className={'text-[#5A294C] text-[13px]'}>© 2024 All rights reserved</label>
+                    <label className={'text-[#5A294C] text-[13px]'}>Developed by Ruvini Rangathara</label>
+                </div>
+            </div>
 
         </div>
     )
