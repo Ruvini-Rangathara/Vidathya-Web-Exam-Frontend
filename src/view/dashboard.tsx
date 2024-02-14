@@ -9,6 +9,8 @@ const search = (e: any, name: string) => {
 const Dashboard = () => {
     return (
         <div className={'w-[83%] top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
+
+            {/*top fixed bar*/}
             <div className={' w-[100%] h-[8vh] bg-[#E8D2E2] mx-auto shadow-md mb-2 flex justify-between'}>
                 <div className={'ml-10 mt-1 flex'}>
                     <Input type={'text'} name={'search'} optional={true} callBack={search}/>
@@ -17,9 +19,10 @@ const Dashboard = () => {
                 <div className={'flex mr-10 justify-center items-center'}>
                     <label className={'mr-2'}>Ms.Ruvini</label>
                     <CiUser className={'w-8 h-8 rounded-full bg-[white] p-1'}/>
-                    {/*<img src={'./assets/images/ruvini.jpg'} alt={'profile'} className={'w-12 h-12 rounded-full'}/>*/}
                 </div>
             </div>
+
+
             <div className={'flex justify-between'}>
                 <h1 className={'text-[3rem] text-[#5A294C] ml-12'}>Dashboard</h1>
                 <div className={'h-30px mr-12 my-auto'}>
