@@ -91,7 +91,7 @@ const Signup: React.FC = () => {
 
 
     return (
-        <div className={'w-[100vw] h-[100vh]'}>
+        <div className={'w-[100vw] h-[100vh] bg-[#E8D2E2]'}>
             <br/>
             <p className={'text-[25px] text-[#071722] text-center mt-12'}>Sign Up</p>
             <p className={'text-[15px] text-[#071722] text-center'}>Create an account to continue</p>
@@ -108,7 +108,7 @@ const Signup: React.FC = () => {
                                 label="Email"
                                 optional={false}
                                 callBack={handleUsernameChange}
-                                placeholder='Email Address here'
+                                placeholder=''
                             />
                         </div>
                     </div>
@@ -121,7 +121,7 @@ const Signup: React.FC = () => {
                                 label="Password"
                                 optional={false}
                                 callBack={handlePasswordChange}
-                                placeholder='Password here'
+                                placeholder=''
                             />
                         </div>
                     </div>
@@ -133,7 +133,7 @@ const Signup: React.FC = () => {
                                 label="Confirm Password"
                                 optional={false}
                                 callBack={handlePasswordConfirmChange}
-                                placeholder='Confirm Password here'
+                                placeholder=''
                             />
                         </div>
                     </div>
@@ -149,11 +149,10 @@ const Signup: React.FC = () => {
                             text={'Register Now'}
                             onClick={addUser}
                         />
-                        <br/>
                         <p className={'mb-10'}>
-                            {/*Already have an account?*/}
-                            {/*<Link to="/login" className='btn btn-outline-dark col-12'> <span*/}
-                            {/*    className={'text-blue-500'}> Login</span></Link>*/}
+                            Already have an account?
+                            <Link to="/login"> <span
+                                className={'text-blue-500'}> Login</span></Link>
                         </p>
                     </div>
                 </div>

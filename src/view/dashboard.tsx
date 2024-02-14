@@ -8,7 +8,7 @@ const search = (e: any, name: string) => {
 }
 const Dashboard = () => {
     return (
-        <div className={'w-[83%] top-0 ml-[17%] transparent flex flex-col'}>
+        <div className={'w-[83%] top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
             <div className={' w-[100%] h-[8vh] bg-[#E8D2E2] mx-auto shadow-md mb-2 flex justify-between'}>
                 <div className={'ml-10 mt-1 flex'}>
                     <Input type={'text'} name={'search'} optional={true} callBack={search}/>

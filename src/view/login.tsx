@@ -50,7 +50,7 @@ const Login: React.FC = () => {
 
 
     return (
-        <div className={'w-[100vw] h-[100vh]'}>
+        <div className={'w-[100vw] h-[100vh] bg-[#E8D2E2]'}>
             <br />
             <p className={'text-[25px] text-[#071722] text-center mt-12'}>Login</p>
             <p className={'text-[20px] text-[#071722] text-center'}>Vidathya Higher Education Centre</p>
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
                                 label="Username"
                                 optional={false}
                                 callBack={handleUsernameChange}
-                                placeholder='Username : '
+                                placeholder=''
                             />
                         </div>
                     </div>
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                                 label="Password"
                                 optional={false}
                                 callBack={handlePasswordChange}
-                                placeholder='Password : '
+                                placeholder=''
                             />
                         </div>
                     </div>
@@ -94,10 +94,9 @@ const Login: React.FC = () => {
                             text={'Login'}
                             onClick={login}
                         />
-                        <br />
-                        <p className={'mb-10'}>
+                        <p className={'mb-6 text-[13px]'}>
                             Do you have no account ?
-                            {/*<Link to="/signup" className='btn btn-outline-dark col-12'> <span className={'text-blue-500'}> Sign up</span></Link>*/}
+                            <Link to="/signup"> <span className={'text-blue-500'}> Sign up</span></Link>
                         </p>
                     </div>
                 </div>
