@@ -1,6 +1,7 @@
 import Navbar from "./navbar.tsx";
 import Input from "./component/input.tsx";
 import {CiUser} from "react-icons/ci";
+import CustomButton from "./component/CustomButton.tsx";
 
 const search = (e: any, name: string) => {
     console.log(e.target.value, name);
@@ -23,28 +24,22 @@ const Settings = () => {
                 </div>
 
                 <div className={'flex justify-between'}>
-                    <h1 className={'text-[3rem] text-[#5A294C] ml-12 opacity-[50%]'}>Settings</h1>
+                    <h1 className={'text-[2rem] text-[#5A294C] ml-12 opacity-[50%]'}>Settings</h1>
                 </div>
 
 
                 <div
-                    className={'w-[60%] h-[75%] justify-around mt-4  bg-[white] rounded-2xl shadow-md p-8 pt-4 mx-auto'}>
-
-                    {/*    search bar*/}
-
-                    <div className={'flex w-[30vw] m-auto '}>
+                    className={'w-[60%] h-[80%] justify-around bg-[white] rounded-2xl shadow-md p-8 mx-auto'}>
+                    <div className={'flex w-[25vw] m-auto '}>
                         <input
                             className={'bg-[white] rounded block border border-gray-200 outline-none focus:border-t-gray-400 p-2 h-6 w-[90%] text-gray-700'}
                             type={'email'} name={'email'} placeholder={'Your email'}/>
                         <button className={'bg-[#5A294C] text-white rounded h-6 px-2 ml-4'}>Search</button>
                     </div>
 
-                    <div className={'w-[70%] h-[90%] bg-transparent p-8 mx-auto border'}>
-                        <br/>
+                    <div className={'w-[65%] h-[90%] bg-transparent p-8 mx-auto'}>
 
-                        {/*inputs for full name, nic*/}
-
-                        <div className={'flex flex-col border w-[25vw] mx-auto'}>
+                        <div className={'flex flex-col w-[25vw] mx-auto'}>
                             <div className="col-6">
                                 <div className="form-group">
                                     <Input
@@ -111,10 +106,43 @@ const Settings = () => {
                                     />
                                 </div>
                             </div>
+
                         </div>
-
-
                     </div>
+
+                    <div className={'w-[100%] flex justify-end gap-4 mt-2'}>
+
+                        <CustomButton
+                            borderColor={'#5A294C'}
+                            bgColor={'white'}
+                            hoverColor={'#5A294C'}
+                            textColor={'#5A294C'}
+                            textHoverColor={'white'}
+                            text={'Save'}
+                            onClick={() => console.log('Save clicked')}
+                        />
+
+                        <CustomButton
+                            borderColor={'#F85F48'}
+                            bgColor={'white'}
+                            hoverColor={'#F85F48'}
+                            textColor={'#F85F48'}
+                            textHoverColor={'white'}
+                            text={'Delete'}
+                            onClick={() => console.log('Delete clicked')}
+                        />
+
+                        <CustomButton
+                            borderColor={'#AAAAAA'}
+                            bgColor={'white'}
+                            hoverColor={'#AAAAAA'}
+                            textColor={'#AAAAAA'}
+                            textHoverColor={'white'}
+                            text={'Cancel'}
+                            onClick={() => console.log('Cancel clicked')}
+                        />
+                    </div>
+
                 </div>
             </div>
         </>

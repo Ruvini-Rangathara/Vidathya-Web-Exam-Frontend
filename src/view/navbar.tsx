@@ -33,6 +33,7 @@ const Navbar = () => {
                                 <label className={'ml-4 text-[#5A294C] font-bold'}>Students</label>
                             </div>
                         </Link>
+
                         <div className={'flex items-center mb-4'}>
                             <PiChalkboardTeacherFill className={'w-6 h-6'}/>
                             <label className={'ml-4 text-[#5A294C] font-bold'}>Teachers</label>
@@ -45,10 +46,13 @@ const Navbar = () => {
                             <MdSubject className={'w-6 h-6'}/>
                             <label className={'ml-4 text-[#5A294C] font-bold'}>About us</label>
                         </div>
-                        <div className={'flex items-center mb-4'}>
-                            <MdSettings className={'w-6 h-6'}/>
-                            <label className={'ml-4 text-[#5A294C] font-bold'}>Settings</label>
-                        </div>
+
+                        <Link to={'/setting'}>
+                            <div className={'flex items-center mb-4'}>
+                                <MdSettings className={'w-6 h-6'}/>
+                                <label className={'ml-4 text-[#5A294C] font-bold'}>Settings</label>
+                            </div>
+                        </Link>
                     </div>
 
                     <div className={'flex justify-center items-center'}>
