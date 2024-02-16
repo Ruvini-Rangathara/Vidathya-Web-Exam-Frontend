@@ -5,10 +5,13 @@ import { Button, Pagination } from "@nextui-org/react";
 
 const Paper = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [question, setQuestion] = useState('');
 
     const qCount = 20;
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        setQuestion("loream "+page);
+
 
     };
 
@@ -55,6 +58,8 @@ const Paper = () => {
                             repellendus, tenetur unde, veritatis voluptates.
                         </p>
 
+                        <p id={'q'}> {question}</p>
+
                         <div className={'flex flex-col gap-3 mt-4 mb-8 justify-center items-center'}>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option1" name="option" value="option1"/>
@@ -80,12 +85,13 @@ const Paper = () => {
                         <p className="text-lg text-default-500 text-center">Question No : {currentPage}</p>
 
                         {/*<Pagination*/}
-                        {/*    style={{}}*/}
+                        {/*    style={{ backgroundColor: 'white', padding: '10px', borderRadius: '5px', margin: 'auto' }}*/}
                         {/*    total={10}*/}
                         {/*    color="secondary"*/}
                         {/*    page={currentPage}*/}
-                        {/*    onChange={setCurrentPage}*/}
+                        {/*    onChange={handlePageChange}*/}
                         {/*/>*/}
+
                         <div className={'flex justify-between mx-4'}>
                             {renderPaginationNumbers()}
                         </div>
