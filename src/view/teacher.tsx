@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Searchbar from "./searchbar.tsx";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -59,10 +60,11 @@ const Teacher = () => {
         <div>
             <Navbar/>
             <div className={'w-[83%] h-screen top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
+                <Searchbar/>
                 <div
-                    className={'w-[85%] h-[90%] flex flex-col mt-8  bg-[white] rounded-2xl shadow-sm p-8 pt-4 mx-auto'}>
+                    className={'w-[85%] h-[85%] flex flex-col mt-2  bg-[white] rounded-2xl shadow-sm p-8 pt-4 mx-auto'}>
 
-                    <label className={'text-2xl text-center mb-6'}>Teachers</label>
+                    <label className={'text-2xl text-center mb-4'}>Teachers</label>
                     <TableContainer component={Paper}>
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>

@@ -3,6 +3,7 @@ import GridItem from './component/grid-item.tsx';
 import Navbar from "./navbar.tsx";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Searchbar from "./searchbar.tsx";
 
 interface GridItemProps {
     id: number;
@@ -81,13 +82,13 @@ const Exam = () => {
         <>
             <Navbar/>
             <div className={'w-[83%] h-screen top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
+                <Searchbar/>
                 <h1 className={'text-[2rem] text-[#5A294C] ml-12 mb-6'}>Exam</h1>
                 <div className={'w-[100%] '}>
                     <Box sx={{ width: '80%', margin:'auto'}}>
                         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                             {data.map((item: GridItemProps) => (
                                 <Grid item xs={6} key={item.id}>
-                                    {/* Pass a function reference to onClick */}
                                     <GridItem
                                         title={item.title}
                                         description={item.description}
