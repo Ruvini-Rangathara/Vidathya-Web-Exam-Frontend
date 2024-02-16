@@ -23,36 +23,43 @@ const Navbar = () => {
                         <Link to={'/home'}>
                             <div className={'flex items-center mb-4'}>
                                 <MdSpaceDashboard className={'w-6 h-6'}/>
-                                <label className={'ml-4 text-[#5A294C] font-bold'}>Dashboard</label>
+                                <label className={'ml-4 text-[#5A294C] font-bold cursor-pointer'}>Dashboard</label>
                             </div>
                         </Link>
 
                         <Link to={'/students'}>
                             <div className={'flex items-center mb-4'}>
                                 <PiStudentFill className={'w-6 h-6'}/>
-                                <label className={'ml-4 text-[#5A294C] font-bold'}>Students</label>
+                                <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>Students</label>
                             </div>
                         </Link>
 
-                        <div className={'flex items-center mb-4'}>
-                            <PiChalkboardTeacherFill className={'w-6 h-6'}/>
-                            <label className={'ml-4 text-[#5A294C] font-bold'}>Teachers</label>
-                        </div>
-                        <div className={'flex items-center mb-4'}>
-                            <PiExamFill className={'w-6 h-6'}/>
-                            <label className={'ml-4 text-[#5A294C] font-bold'}>Exams</label>
-                        </div>
-                        <div className={'flex items-center mb-4'}>
-                            <MdSubject className={'w-6 h-6'}/>
-                            <label className={'ml-4 text-[#5A294C] font-bold'}>About us</label>
-                        </div>
+                        <Link to={'/teachers'}>
+                            <div className={'flex items-center mb-4'}>
+                                <PiChalkboardTeacherFill className={'w-6 h-6'}/>
+                                <label className={'ml-4 text-[#5A294C] font-bold cursor-pointer'}>Teachers</label>
+                            </div>
+                        </Link>
+                        <Link to={'/exams'}>
+                            <div className={'flex items-center mb-4'}>
+                                <PiExamFill className={'w-6 h-6'}/>
+                                <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>Exams</label>
+                            </div>
+                        </Link>
+                        <Link to={'/about'}>
+                            <div className={'flex items-center mb-4'}>
+                                <MdSubject className={'w-6 h-6'}/>
+                                <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>About us</label>
+                            </div>
+                        </Link>
 
                         <Link to={'/setting'}>
                             <div className={'flex items-center mb-4'}>
                                 <MdSettings className={'w-6 h-6'}/>
-                                <label className={'ml-4 text-[#5A294C] font-bold'}>Settings</label>
+                                <label className={'ml-4 text-[#5A294C] font-bold cursor-pointer'}>Settings</label>
                             </div>
                         </Link>
+
                     </div>
 
                     <div className={'flex justify-center items-center'}>
