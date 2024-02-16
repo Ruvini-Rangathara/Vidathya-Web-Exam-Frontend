@@ -1,5 +1,3 @@
-import Input from "./component/input.tsx";
-import {CiUser} from "react-icons/ci";
 import CustomButton from "./component/CustomButton.tsx";
 import Chart from "./component/Chart.tsx";
 import Navbar from "./navbar.tsx";
@@ -10,10 +8,7 @@ const Dashboard = () => {
     return (<>
             <Navbar/>
             <div className={'w-[83%] top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
-
-
                 <Searchbar/>
-
                 <div className={'flex justify-between'}>
                     <h1 className={'text-[3rem] text-[#5A294C] ml-12'}>Dashboard</h1>
                     <div className={'h-30px mr-12 my-auto'}>
