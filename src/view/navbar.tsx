@@ -27,20 +27,20 @@ const Navbar = () => {
                             </div>
                         </Link>
 
-                        <Link to={'/students'}>
+                        <Link to={'/myexam'}>
                             <div className={'flex items-center mb-4'}>
                                 <PiStudentFill className={'w-6 h-6'}/>
-                                <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>Students</label>
+                                <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>My Exam</label>
                             </div>
                         </Link>
 
-                        <Link to={'/teachers'}>
+                        <Link to={'/teacher'}>
                             <div className={'flex items-center mb-4'}>
                                 <PiChalkboardTeacherFill className={'w-6 h-6'}/>
                                 <label className={'ml-4 text-[#5A294C] font-bold cursor-pointer'}>Teachers</label>
                             </div>
                         </Link>
-                        <Link to={'/exams'}>
+                        <Link to={'/exam'}>
                             <div className={'flex items-center mb-4'}>
                                 <PiExamFill className={'w-6 h-6'}/>
                                 <label className={'ml-4 text-[#5A294C] font-bold  cursor-pointer'}>Exams</label>

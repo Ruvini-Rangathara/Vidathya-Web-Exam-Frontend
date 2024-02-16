@@ -5,6 +5,7 @@ import Signup from "./view/signup.tsx";
 import Settings from "./view/settings.tsx";
 import Dashboard from "./view/dashboard.tsx";
 import About from "./view/about.tsx";
+import Teacher from "./view/teacher.tsx";
 
 function App() {
     return (
@@ -16,6 +17,9 @@ function App() {
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/home" element={<Dashboard/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path="/teacher" element={<Teacher/>}/>
+                <Route path="/myexam" element={<Teacher/>}/>
+                <Route path="/exam" element={<Teacher/>}/>
             </Routes>
         </BrowserRouter>
 
