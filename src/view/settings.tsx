@@ -3,10 +3,92 @@ import Input from "./component/input.tsx";
 import {CiUser} from "react-icons/ci";
 import CustomButton from "./component/CustomButton.tsx";
 import Searchbar from "./searchbar.tsx";
+import {useState} from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const search = (e: any, name: string) => {
     console.log(e.target.value, name);
 }
+
+const [email, setEmail] = useState('');
+const [name, setName] = useState('');
+const [nic, setNic] = useState('');
+const [oldPassword, setOldPassword] = useState('');
+const [newPassword, setNewPassword] = useState('');
+const [confirmPassword, setConfirmPassword] = useState('');
+
+const handleInputs = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+    switch (type) {
+        case 'email':
+            setEmail(e.target.value);
+            break;
+        case 'name':
+            setName(e.target.value);
+            break;
+        case 'nic':
+            setNic(e.target.value);
+            break;
+        case 'oldPassword':
+            setOldPassword(e.target.value);
+            break;
+        case 'newPassword':
+            setNewPassword(e.target.value);
+            break;
+        case 'confirmPassword':
+            setConfirmPassword(e.target.value);
+            break;
+
+        default :
+            break;
+    }
+}
+
+const clearForm = () => {
+    setEmail("");
+    setName("");
+    setNic("");
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+}
+
+const validateSubmission = () => {
+    if (email && name && name && nic && oldPassword && newPassword && confirmPassword) {
+        console.log("Valid Inputs");
+        return true;
+    } else {
+        Swal.fire({
+            icon: "error", title: "Invalid Inputs", text: "Please enter valid inputs"
+        }).then(r => { console.log(r); });
+        return false;
+    }
+}
+
+const deleteUser = () => {
+    if (validateSubmission()) {
+        axios.delete('http://localhost:9091/api/v1/user/delete')
+            .then((response) => {
+                if (response.status === 200) {
+                    Swal.fire({
+                        icon: "success", title: "Success!", text: "User deleted successfully!"
+                    });
+                    clearForm()
+                } else {
+                    Swal.fire({
+                        icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
+                    });
+                }
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error", title: "Sorry!", text: "Something went wrong. " + err
+                });
+            });
+    }
+};
+
+
 const Settings = () => {
     return (
         <>
@@ -23,7 +105,9 @@ const Settings = () => {
                     <div className={'flex w-[25vw] m-auto '}>
                         <input
                             className={'bg-[white] rounded block border border-gray-200 outline-none focus:border-t-gray-400 p-2 h-6 w-[90%] text-gray-700'}
-                            type={'email'} name={'email'} placeholder={'Your email'}/>
+                            type={'email'} name={'email'} placeholder={'Your email'} value={'email'}
+                            callBack={handleInputs}/>
+                        />
                         <button className={'bg-[#5A294C] text-white rounded h-6 px-2 ml-4'}>Search</button>
                     </div>
 
@@ -37,7 +121,8 @@ const Settings = () => {
                                         name="fullName"
                                         label="Full Name"
                                         optional={false}
-                                        callBack={search}
+                                        value={name}
+                                        callBack={handleInputs}
                                         placeholder=''
                                     />
                                 </div>
@@ -49,7 +134,8 @@ const Settings = () => {
                                         name="nic"
                                         label="NIC"
                                         optional={false}
-                                        callBack={search}
+                                        value={nic}
+                                        callBack={handleInputs}
                                         placeholder=''
                                     />
                                 </div>
@@ -67,7 +153,8 @@ const Settings = () => {
                                         name="oldPassword"
                                         label="Old Password"
                                         optional={false}
-                                        callBack={search}
+                                        value={oldPassword}
+                                        callBack={handleInputs}
                                         placeholder=''
                                     />
                                 </div>
@@ -79,7 +166,8 @@ const Settings = () => {
                                         name="newPassword"
                                         label="New Password"
                                         optional={false}
-                                        callBack={search}
+                                        value={newPassword}
+                                        callBack={handleInputs}
                                         placeholder=''
                                     />
                                 </div>
@@ -91,7 +179,8 @@ const Settings = () => {
                                         name="confirmPassword"
                                         label="Confirm Password"
                                         optional={false}
-                                        callBack={search}
+                                        value={confirmPassword}
+                                        callBack={handleInputs}
                                         placeholder=''
                                     />
                                 </div>

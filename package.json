@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "@mui/x-charts": "^6.19.4",
+    "@types/axios": "^0.14.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -28,6 +30,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "js-cookie": "^3.0.5",
     "postcss": "^8.4.35",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.0",

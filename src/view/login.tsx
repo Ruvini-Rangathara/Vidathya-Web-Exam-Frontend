@@ -1,52 +1,82 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Input from "./component/input.tsx";
 import CustomButton from "./component/CustomButton.tsx";
+import Swal from "sweetalert2";
+import * as validator from '../util/validator';
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 const Login: React.FC = () => {
-    const [username, setUsername]=useState('');
+    const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
 
-    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
-    };
+    const navigate = useNavigate();
 
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    };
+        const handleInput = (e, type): void => {
+            switch (type) {
+                case 'email':
+                    // this.setState({...this.state, email: e.target.value})
+                    setEmail(e.target.value);
+                    break;
+                case 'password':
+                    // this.setState({...this.state, password: e.target.value})
+                    setPassword(e.target.value)
+                    break;
+            }
+        }
 
+        const handleLogin = (): void => {
+            let isValidInputs = true;
+            let errorMsg = "";
 
+            if(!validator.validateEmail(email)) {
+                // error
+                isValidInputs = false;
+                errorMsg = "> Invalid Email";
+            }
 
-    const login = async ()=>{
-        // if(password && username){
-        //     const user = {
-        //         username : username,
-        //         password : password
-        //     }
-        //
-        //     console.log(JSON.stringify(user))
-        //
-        //     try{
-        //         const response = await fetch('http://localhost:3000/api/user/login',{
-        //             method : 'POST',
-        //             headers : {
-        //                 'Content-Type' : 'application/json'
-        //             },
-        //             body : JSON.stringify(user)
-        //         })
-        //         const data = await response.json()
-        //         if(data.status === 'success'){
-        //             localStorage.setItem('username',user.username)
-        //             console.log("saved username in local storage : ",localStorage.getItem('username'))
-        //             window.location.href = '/'
-        //         }else{
-        //             alert(data.message)
-        //         }
-        //     }catch (e){
-        //         console.log(e)
-        //     }
-        // }
-    }
+            console.log(password)
+
+            if(!validator.validatePassword(password)) {
+                // error
+                isValidInputs = false;
+                errorMsg = errorMsg + " > Invalid Password";
+            }
+
+            if(isValidInputs) {
+                // send data to backend
+                const headers = {'Content-Type': 'application/json'}
+                let body = {
+                    email: email,
+                    password: password
+                }
+                axios.post("http://localhost:9091/api/v1/user/auth", body, {headers: headers})
+                    .then(r => {
+
+                        Cookies.set("token", r.data.data.accessToken);
+                        console.log(r.data.data.accessToken);
+                        Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
+                        navigate("/home");
+
+                    })
+                    .catch(e => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Sorry!",
+                            text: "Something went wrong"
+                        }).then(r => { console.log(r); });
+                    })
+
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Invalid Inputs",
+                    text: errorMsg
+                }).then(r => { console.log(r); });
+            }
+
+        }
 
 
     return (
@@ -66,7 +96,8 @@ const Login: React.FC = () => {
                                 name="username"
                                 label="Username"
                                 optional={false}
-                                callBack={handleUsernameChange}
+                                value={email}
+                                callBack={handleInput}
                                 placeholder=''
                             />
                         </div>
@@ -78,7 +109,8 @@ const Login: React.FC = () => {
                                 name="password"
                                 label="Password"
                                 optional={false}
-                                callBack={handlePasswordChange}
+                                value={password}
+                                callBack={handleInput}
                                 placeholder=''
                             />
                         </div>
@@ -92,7 +124,7 @@ const Login: React.FC = () => {
                             textColor={'#5A294C'}
                             textHoverColor={'white'}
                             text={'Login'}
-                            onClick={login}
+                            onClick={handleLogin}
                         />
                         <p className={'mb-6 text-[13px]'}>
                             Do you have no account ?
