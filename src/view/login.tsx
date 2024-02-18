@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import Input from "./component/input.tsx";
 import CustomButton from "./component/CustomButton.tsx";
@@ -8,93 +8,74 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 
 const Login: React.FC = () => {
-    const [email, setEmail]=useState('');
-    const [password, setPassword]=useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
-        const handleInput = (e, type): void => {
-            switch (type) {
-                case 'email':
-                    // this.setState({...this.state, email: e.target.value})
-                    setEmail(e.target.value);
-                    break;
-                case 'password':
-                    // this.setState({...this.state, password: e.target.value})
-                    setPassword(e.target.value)
-                    break;
-            }
+    const handleInput = (e, type): void => {
+        switch (type) {
+
+            case 'email':
+                // this.setState({...this.state, email: e.target.value})
+                setEmail(e.target.value);
+                break;
+            case 'password':
+                // this.setState({...this.state, password: e.target.value})
+                setPassword(e.target.value)
+                break;
         }
+    }
 
-        const handleLogin = (): void => {
-            let isValidInputs = true;
-            let errorMsg = "";
+    const handleLogin = (): void => {
+        let isValidInputs = true;
+        let errorMsg = "";
 
-            if(!validator.validateEmail(email)) {
-                // error
-                isValidInputs = false;
-                errorMsg = "> Invalid Email";
-            }
+        // send data to backend
+        const headers = {'Content-Type': 'application/json'}
+        let body = {
+            email: email,
+            password: password
+        }
+        axios.post("http://localhost:9091/api/v1/user/auth", body, {headers: headers})
+            .then(r => {
 
-            console.log(password)
+                Cookies.set("token", r.data.data.accessToken);
+                Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
+                console.log("cookie", Cookies.get("token"));
+                navigate("/home");
 
-            if(!validator.validatePassword(password)) {
-                // error
-                isValidInputs = false;
-                errorMsg = errorMsg + " > Invalid Password";
-            }
-
-            if(isValidInputs) {
-                // send data to backend
-                const headers = {'Content-Type': 'application/json'}
-                let body = {
-                    email: email,
-                    password: password
-                }
-                axios.post("http://localhost:9091/api/v1/user/auth", body, {headers: headers})
-                    .then(r => {
-
-                        Cookies.set("token", r.data.data.accessToken);
-                        console.log(r.data.data.accessToken);
-                        Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
-                        navigate("/home");
-
-                    })
-                    .catch(e => {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Sorry!",
-                            text: "Something went wrong"
-                        }).then(r => { console.log(r); });
-                    })
-
-            } else {
+            })
+            .catch(e => {
                 Swal.fire({
                     icon: "error",
-                    title: "Invalid Inputs",
-                    text: errorMsg
-                }).then(r => { console.log(r); });
-            }
+                    title: "Sorry!",
+                    text: "Something went wrong"
+                }).then(r => {
+                    console.log(r);
+                });
+            })
 
-        }
+
+    }
 
 
     return (
         <div className={'w-[100vw] h-[100vh] bg-[#E8D2E2]'}>
-            <br />
+            <br/>
             <p className={'text-[25px] text-[#071722] text-center mt-12'}>Login</p>
             <p className={'text-[20px] text-[#071722] text-center'}>Vidathya Higher Education Centre</p>
             <div className="w-3/5 h-3/5 m-auto border border-gray-200 rounded-xl flex bg-gray-50">
                 <div className={' w-[60%] m-auto'}>
-                    <img src={'public/instituteLogo.png'} alt="Logo" />
+                    <img src={'public/instituteLogo.png'} alt="Logo"/>
                 </div>
                 <div className="flex flex-col justify-center items-center mt-10 mr-10">
                     <div className="col-6">
                         <div className="form-group">
                             <Input
                                 type="text"
-                                name="username"
-                                label="Username"
+                                name="email"
+                                label="Email"
                                 optional={false}
                                 value={email}
                                 callBack={handleInput}
@@ -116,7 +97,7 @@ const Login: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex flex-col justify-center items-center">
-                        <br />
+                        <br/>
                         <CustomButton
                             borderColor={'#5A294C'}
                             bgColor={'white'}

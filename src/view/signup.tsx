@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 const Signup: React.FC = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('Student');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
     };
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,24 +20,24 @@ const Signup: React.FC = () => {
     };
 
     const handlePasswordConfirmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
+        setConfirmPassword(event.target.value);
     }
 
 
     const addUser = async () => {
         try {
             if (validateSubmission()) {
-                if(username === 'vidathyainstitute@gmail.com'){
+                if(email === 'vidathyainstitute@gmail.com'){
                     setSelectedRole('Teacher');
                 }
 
                 const newUser = {
-                    username: username, password: password, role: selectedRole,
+                    email: email, password: password, role: selectedRole,
                 };
 
                 console.log("user", newUser); // Log the object directly without stringify
 
-                const response = await axios.post("http://localhost:3000/api/user/add", newUser);
+                const response = await axios.post("http://localhost:9091/api/v1/user/add", newUser);
                 console.log(response);
 
                 if (response.status === 200) {
@@ -71,17 +71,16 @@ const Signup: React.FC = () => {
     };
 
     const clearForm = () => {
-        setUsername("");
+        setEmail("");
         setPassword("");
         setConfirmPassword("");
     };
 
     const validateSubmission = () => {
-        if (username && password && confirmPassword && password === confirmPassword) {
-            // You can add more validation logic if needed
-            console.log("Valid Inputs");
+        if (email && password && confirmPassword && password === confirmPassword) {
             return true;
         } else {
+            console.log("Invalid Inputs");
             Swal.fire({
                 icon: "error", title: "Invalid Inputs", text: "Please enter valid inputs",
             });
@@ -107,7 +106,7 @@ const Signup: React.FC = () => {
                                 name="email"
                                 label="Email"
                                 optional={false}
-                                callBack={handleUsernameChange}
+                                callBack={handleEmailChange}
                                 placeholder=''
                             />
                         </div>

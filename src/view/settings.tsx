@@ -1,95 +1,141 @@
 import Navbar from "./navbar.tsx";
 import Input from "./component/input.tsx";
-import {CiUser} from "react-icons/ci";
 import CustomButton from "./component/CustomButton.tsx";
 import Searchbar from "./searchbar.tsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-
-const search = (e: any, name: string) => {
-    console.log(e.target.value, name);
-}
-
-const [email, setEmail] = useState('');
-const [name, setName] = useState('');
-const [nic, setNic] = useState('');
-const [oldPassword, setOldPassword] = useState('');
-const [newPassword, setNewPassword] = useState('');
-const [confirmPassword, setConfirmPassword] = useState('');
-
-const handleInputs = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
-    switch (type) {
-        case 'email':
-            setEmail(e.target.value);
-            break;
-        case 'name':
-            setName(e.target.value);
-            break;
-        case 'nic':
-            setNic(e.target.value);
-            break;
-        case 'oldPassword':
-            setOldPassword(e.target.value);
-            break;
-        case 'newPassword':
-            setNewPassword(e.target.value);
-            break;
-        case 'confirmPassword':
-            setConfirmPassword(e.target.value);
-            break;
-
-        default :
-            break;
-    }
-}
-
-const clearForm = () => {
-    setEmail("");
-    setName("");
-    setNic("");
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-}
-
-const validateSubmission = () => {
-    if (email && name && name && nic && oldPassword && newPassword && confirmPassword) {
-        console.log("Valid Inputs");
-        return true;
-    } else {
-        Swal.fire({
-            icon: "error", title: "Invalid Inputs", text: "Please enter valid inputs"
-        }).then(r => { console.log(r); });
-        return false;
-    }
-}
-
-const deleteUser = () => {
-    if (validateSubmission()) {
-        axios.delete('http://localhost:9091/api/v1/user/delete')
-            .then((response) => {
-                if (response.status === 200) {
-                    Swal.fire({
-                        icon: "success", title: "Success!", text: "User deleted successfully!"
-                    });
-                    clearForm()
-                } else {
-                    Swal.fire({
-                        icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
-                    });
-                }
-            })
-            .catch((err) => {
-                Swal.fire({
-                    icon: "error", title: "Sorry!", text: "Something went wrong. " + err
-                });
-            });
-    }
-};
-
+import Cookies from 'js-cookie';
 
 const Settings = () => {
+
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [nic, setNic] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleInputs = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+        switch (type) {
+            case 'email':
+                setEmail(e.target.value);
+                break;
+            case 'name':
+                setName(e.target.value);
+                break;
+            case 'nic':
+                setNic(e.target.value);
+                break;
+            case 'oldPassword':
+                setOldPassword(e.target.value);
+                break;
+            case 'newPassword':
+                setNewPassword(e.target.value);
+                break;
+            case 'confirmPassword':
+                setConfirmPassword(e.target.value);
+                break;
+
+            default :
+                break;
+        }
+    }
+
+    const clearForm = () => {
+        setEmail("");
+        setName("");
+        setNic("");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+    }
+
+    const validateSubmission = () => {
+        if (email && name && name && nic && oldPassword && newPassword && confirmPassword) {
+            if(newPassword !== confirmPassword){
+                Swal.fire({
+                    icon: "error", title: "Invalid Inputs", text: "Passwords do not match"
+                }).then(r => {
+                    console.log(r);
+                });
+                return false;
+            }
+            return true;
+        } else {
+            Swal.fire({
+                icon: "error", title: "Invalid Inputs", text: "Please enter valid inputs"
+            }).then(r => {
+                console.log(r);
+            });
+            return false;
+        }
+    }
+
+    const deleteUser = () => {
+        if (validateSubmission()) {
+            axios.delete('http://localhost:9091/api/v1/user/delete')
+                .then((response) => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: "success", title: "Success!", text: "User deleted successfully!"
+                        });
+                        clearForm()
+                    } else {
+                        Swal.fire({
+                            icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
+                        });
+                    }
+                })
+                .catch((err) => {
+                    Swal.fire({
+                        icon: "error", title: "Sorry!", text: "Something went wrong. " + err
+                    });
+                });
+        }
+    };
+
+    const updateUser = () => {
+        const ACCESS_TOKEN = 'Bearer '+Cookies.get("token");
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': ACCESS_TOKEN
+        }
+
+        console.log("token : ",ACCESS_TOKEN)
+        const user = {
+            email: email,
+            name: name,
+            nic: nic,
+            password: newPassword,
+        };
+        console.log("user", user);
+        if (validateSubmission()) {
+            console.log("validate")
+            axios.put("http://localhost:9091/api/v1/user/update", user , {headers: headers})
+                .then((response) => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: "success", title: "Success!", text: "User updated successfully!"
+                        });
+                        clearForm()
+                    } else {
+                        Swal.fire({
+                            icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
+                        });
+                    }
+                })
+                .catch((err) => {
+                    Swal.fire({
+                        icon: "error", title: "Sorry!", text: "Something went wrong. " + err
+                    });
+                });
+        }else {
+            console.log("Invalid Inputs");
+        }
+    }
+
+
     return (
         <>
             <Navbar/>
@@ -103,12 +149,16 @@ const Settings = () => {
                 <div
                     className={'w-[60%] h-[80%] justify-around bg-[white] rounded-2xl shadow-md p-8 mx-auto'}>
                     <div className={'flex w-[25vw] m-auto '}>
-                        <input
-                            className={'bg-[white] rounded block border border-gray-200 outline-none focus:border-t-gray-400 p-2 h-6 w-[90%] text-gray-700'}
-                            type={'email'} name={'email'} placeholder={'Your email'} value={'email'}
-                            callBack={handleInputs}/>
+                        <Input
+                            type="email"
+                            name="email"
+                            label=''
+                            optional={true}
+                            value={email}
+                            callBack={handleInputs}
+                            placeholder='Email Address'
                         />
-                        <button className={'bg-[#5A294C] text-white rounded h-6 px-2 ml-4'}>Search</button>
+                        <button className={'bg-[#5A294C] text-white rounded mt-2 h-6 px-2 ml-4'}>Search</button>
                     </div>
 
                     <div className={'w-[65%] h-[90%] bg-transparent p-8 mx-auto'}>
@@ -118,7 +168,7 @@ const Settings = () => {
                                 <div className="form-group">
                                     <Input
                                         type="text"
-                                        name="fullName"
+                                        name="name"
                                         label="Full Name"
                                         optional={false}
                                         value={name}
@@ -189,7 +239,7 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <div className={'w-[100%] flex justify-end gap-4 mt-2'}>
+                    <div className={'w-[100%] flex justify-end gap-4 mb-2'}>
 
                         <CustomButton
                             borderColor={'#5A294C'}
@@ -198,7 +248,7 @@ const Settings = () => {
                             textColor={'#5A294C'}
                             textHoverColor={'white'}
                             text={'Save'}
-                            onClick={() => console.log('Save clicked')}
+                            onClick={updateUser}
                         />
 
                         <CustomButton
