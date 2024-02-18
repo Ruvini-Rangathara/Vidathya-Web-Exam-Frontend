@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Searchbar from "./searchbar.tsx";
+import Cookies from "js-cookie";
+import {useEffect, useState} from "react";
+import Swal from "sweetalert2";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -31,31 +34,46 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-function createData(
-    id: number,
-    name: string,
-    email: string
-) {
-    return {id, name, email};
+function createData(nic, name, email) {
+    return { nic, name, email };
 }
-
-const rows = [
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-    createData(1,'Ruvini Rangathara', 'ruvini925@gmail.com'),
-];
 
 
 const Teacher = () => {
+    const [teachers, setTeachers] = useState([]);
+
+    useEffect(() => {
+        loadTeachers();
+    }, []);
+
+    const loadTeachers = () => {
+        // fetch teachers from the backend
+        const ACCESS_TOKEN = 'Bearer ' + Cookies.get("token");
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': ACCESS_TOKEN
+        };
+
+        fetch("http://localhost:9091/api/v1/user/all?role=student", { headers: headers })
+            .then(r => {
+
+                if (r.status === 200) {
+                    r.json().then(data => {
+                        const teacherData = data.data.map(teacher =>
+                            createData(teacher.nic, teacher.name, teacher.email));
+                        setTeachers(teacherData);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
+                    });
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
+
     return (
         <div>
             <Navbar/>
@@ -69,16 +87,16 @@ const Teacher = () => {
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID</StyledTableCell>
+                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIC</StyledTableCell>
                                     <StyledTableCell>Full Name</StyledTableCell>
                                     <StyledTableCell>Email</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
-                                    <StyledTableRow key={row.id}>
+                                {teachers.map((row) => (
+                                    <StyledTableRow key={row.nic}>
                                         <StyledTableCell component="th" scope="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            {row.id}
+                                            {row.nic}
                                         </StyledTableCell>
                                         <StyledTableCell>{row.name}</StyledTableCell>
                                         <StyledTableCell>{row.email}</StyledTableCell>
