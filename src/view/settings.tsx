@@ -2,12 +2,16 @@ import Navbar from "./navbar.tsx";
 import Input from "./component/input.tsx";
 import CustomButton from "./component/CustomButton.tsx";
 import Searchbar from "./searchbar.tsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import {useNavigate} from "react-router-dom";
 
 const Settings = () => {
+    const navigate = useNavigate();
+
+    const [deleteButton, setEnable] = useState(false);
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -15,6 +19,10 @@ const Settings = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    useEffect(() => {
+        setEnable(false)
+    }, []);
 
     const handleInputs = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
         switch (type) {
@@ -53,7 +61,7 @@ const Settings = () => {
 
     const validateSubmission = () => {
         if (email && name && name && nic && oldPassword && newPassword && confirmPassword) {
-            if(newPassword !== confirmPassword){
+            if (newPassword !== confirmPassword) {
                 Swal.fire({
                     icon: "error", title: "Invalid Inputs", text: "Passwords do not match"
                 }).then(r => {
@@ -72,15 +80,70 @@ const Settings = () => {
         }
     }
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            searchUser();
+        }
+    };
+
+    const closeForm = () => {
+        navigate('/home')
+    }
+    const searchUser = () => {
+        const ACCESS_TOKEN = 'Bearer ' + Cookies.get("token");
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': ACCESS_TOKEN
+        }
+
+        axios.get('http://localhost:9091/api/v1/user/get', {headers: headers})
+            .then((response) => {
+                if (response.status === 200) {
+                    if (response.data) {
+                        const userData = response.data.data[0];
+
+                        setEmail(userData.email);
+                        setName(userData.name);
+                        setNic(userData.nic);
+
+                        setEnable(true);
+
+                    } else {
+                        console.log('response.data ')
+                        console.log("No user data found in response.");
+                    }
+                } else {
+                    Swal.fire({
+                        icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log("Error : ", err);
+                Swal.fire({
+                    icon: "error", title: "Sorry!", text: "Something went wrong. " + err
+                });
+            });
+
+    }
+
+
     const deleteUser = () => {
+        const ACCESS_TOKEN = 'Bearer ' + Cookies.get("token");
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': ACCESS_TOKEN
+        }
+
         if (validateSubmission()) {
-            axios.delete('http://localhost:9091/api/v1/user/delete')
+            axios.delete('http://localhost:9091/api/v1/user/delete', {headers: headers})
                 .then((response) => {
                     if (response.status === 200) {
                         Swal.fire({
                             icon: "success", title: "Success!", text: "User deleted successfully!"
                         });
                         clearForm()
+                        setEnable(false )
                     } else {
                         Swal.fire({
                             icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
@@ -96,13 +159,13 @@ const Settings = () => {
     };
 
     const updateUser = () => {
-        const ACCESS_TOKEN = 'Bearer '+Cookies.get("token");
+        const ACCESS_TOKEN = 'Bearer ' + Cookies.get("token");
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': ACCESS_TOKEN
         }
 
-        console.log("token : ",ACCESS_TOKEN)
+        console.log("token : ", ACCESS_TOKEN)
         const user = {
             email: email,
             name: name,
@@ -112,13 +175,14 @@ const Settings = () => {
         console.log("user", user);
         if (validateSubmission()) {
             console.log("validate")
-            axios.put("http://localhost:9091/api/v1/user/update", user , {headers: headers})
+            axios.put("http://localhost:9091/api/v1/user/update", user, {headers: headers})
                 .then((response) => {
                     if (response.status === 200) {
                         Swal.fire({
                             icon: "success", title: "Success!", text: "User updated successfully!"
                         });
                         clearForm()
+                        setEnable(false )
                     } else {
                         Swal.fire({
                             icon: "error", title: "Sorry!", text: "Something went wrong. Please try again."
@@ -130,7 +194,7 @@ const Settings = () => {
                         icon: "error", title: "Sorry!", text: "Something went wrong. " + err
                     });
                 });
-        }else {
+        } else {
             console.log("Invalid Inputs");
         }
     }
@@ -157,8 +221,12 @@ const Settings = () => {
                             value={email}
                             callBack={handleInputs}
                             placeholder='Email Address'
+                            onKeyDown={handleKeyPress}
                         />
-                        <button className={'bg-[#5A294C] text-white rounded mt-2 h-6 px-2 ml-4'}>Search</button>
+                        <button className={'bg-[#5A294C] text-white rounded mt-2 h-6 px-2 ml-4'}
+                                onClick={searchUser}
+                        >Search
+                        </button>
                     </div>
 
                     <div className={'w-[65%] h-[90%] bg-transparent p-8 mx-auto'}>
@@ -258,7 +326,7 @@ const Settings = () => {
                             textColor={'#F85F48'}
                             textHoverColor={'white'}
                             text={'Delete'}
-                            onClick={() => console.log('Delete clicked')}
+                            onClick={deleteUser}
                         />
 
                         <CustomButton
@@ -268,7 +336,7 @@ const Settings = () => {
                             textColor={'#AAAAAA'}
                             textHoverColor={'white'}
                             text={'Cancel'}
-                            onClick={() => console.log('Cancel clicked')}
+                            onClick={closeForm}
                         />
                     </div>
 
