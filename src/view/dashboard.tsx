@@ -2,9 +2,62 @@ import CustomButton from "./component/CustomButton.tsx";
 import Chart from "./component/Chart.tsx";
 import Navbar from "./navbar.tsx";
 import Searchbar from "./searchbar.tsx";
+import {useEffect, useState} from "react";
+import Cookies from "js-cookie";
+
 
 
 const Dashboard = () => {
+    const [studentCount, setStudentCount] = useState(0);
+    const [teacherCount, setTeacherCount] = useState(0);
+    const [examCount, setExamCount] = useState(0);
+
+    useEffect(() => {
+        loadTeacherCount();
+        loadStudentCount();
+    }, []);
+
+    useEffect(() => {
+    }, [teacherCount]);
+
+    useEffect(() => {
+    }, [studentCount]);
+
+
+    const loadTeacherCount = () => {
+        fetch("http://localhost:9091/api/v1/user/count/teacher")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                setTeacherCount(data.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    const loadStudentCount = () => {
+        fetch("http://localhost:9091/api/v1/user/count/student")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                setStudentCount(data.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     return (<>
             <Navbar/>
             <div className={'w-[83%] top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
@@ -20,12 +73,14 @@ const Dashboard = () => {
                 <div className={'text-[#772460] mx-auto w-[80%] h-[15vh] flex justify-center items-center'}>
                     <div
                         className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
-                        <label className={'text-[21px] '}>134</label>
+                        <label className={'text-[21px] '}>
+                            {studentCount}
+                        </label>
                         <label className={'text-[25px]'}>Students</label>
                     </div>
                     <div
                         className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
-                        <label className={'text-[21px] '}>13</label>
+                        <label className={'text-[21px] '}>{teacherCount}</label>
                         <label className={'text-[25px]'}>Teachers</label>
                     </div>
                     <div
