@@ -11,10 +11,13 @@ const Dashboard = () => {
     const [studentCount, setStudentCount] = useState(0);
     const [teacherCount, setTeacherCount] = useState(0);
     const [examCount, setExamCount] = useState(0);
+    const [myExamCount, setMyExamCount] = useState(0);
 
     useEffect(() => {
         loadTeacherCount();
         loadStudentCount();
+        loadExamCount();
+        loadMyExamCount();
     }, []);
 
     useEffect(() => {
@@ -22,6 +25,13 @@ const Dashboard = () => {
 
     useEffect(() => {
     }, [studentCount]);
+
+    useEffect(() => {
+    }, [examCount]);
+
+    useEffect(() => {
+    }, [myExamCount]);
+
 
 
     const loadTeacherCount = () => {
@@ -58,6 +68,41 @@ const Dashboard = () => {
             });
     }
 
+    const loadExamCount = () => {
+        fetch("http://localhost:9090/exam/api/v1/paper/count")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                setExamCount(data.content);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    const loadMyExamCount = () => {
+        const nic = Cookies.get("nic");
+        fetch("http://localhost:9090/exam/api/v1/myexam/count/"+nic)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .then(data => {
+                setMyExamCount(data.content);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     return (<>
             <Navbar/>
             <div className={'w-[83%] top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
@@ -85,13 +130,13 @@ const Dashboard = () => {
                     </div>
                     <div
                         className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
-                        <label className={'text-[21px] '}>34</label>
+                        <label className={'text-[21px] '}>{examCount}</label>
                         <label className={'text-[25px]'}>Exams</label>
                     </div>
                     <div
                         className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
-                        <label className={'text-[21px] '}>34</label>
-                        <label className={'text-[25px]'}>Exams</label>
+                        <label className={'text-[21px] '}>{myExamCount}</label>
+                        <label className={'text-[25px]'}>My Exam</label>
                     </div>
                 </div>
 
