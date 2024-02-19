@@ -34,8 +34,8 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-function createData(nic, name, email) {
-    return { nic, name, email };
+function createData(id,nic, name, email) {
+    return { id,nic, name, email };
 }
 
 
@@ -54,14 +54,17 @@ const Teacher = () => {
             'Authorization': ACCESS_TOKEN
         };
 
-        fetch("http://localhost:9091/api/v1/user/all?role=student", { headers: headers })
+        fetch("http://localhost:9091/api/v1/user/all?role=teacher", { headers: headers })
             .then(r => {
 
                 if (r.status === 200) {
                     r.json().then(data => {
                         const teacherData = data.data.map(teacher =>
-                            createData(teacher.nic, teacher.name, teacher.email));
+                            createData(teacher.id, teacher.name, teacher.nic, teacher.email));
                         setTeachers(teacherData);
+                        {teachers.map((row) => (
+                            console.log("Data row  : ",JSON.stringify(row))
+                        ))}
                     });
                 } else {
                     Swal.fire({
@@ -87,18 +90,20 @@ const Teacher = () => {
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIC</StyledTableCell>
+                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID</StyledTableCell>
+                                    <StyledTableCell>NIC</StyledTableCell>
                                     <StyledTableCell>Full Name</StyledTableCell>
                                     <StyledTableCell>Email</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {teachers.map((row) => (
-                                    <StyledTableRow key={row.nic}>
+                                    <StyledTableRow key={row.id}>
                                         <StyledTableCell component="th" scope="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            {row.nic}
+                                            {row.id}
                                         </StyledTableCell>
                                         <StyledTableCell>{row.name}</StyledTableCell>
+                                        <StyledTableCell>{row.nic}</StyledTableCell>
                                         <StyledTableCell>{row.email}</StyledTableCell>
                                     </StyledTableRow>
                                 ))}

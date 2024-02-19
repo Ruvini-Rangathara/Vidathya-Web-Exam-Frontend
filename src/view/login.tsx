@@ -3,12 +3,11 @@ import {Link, useNavigate} from "react-router-dom";
 import Input from "./component/input.tsx";
 import CustomButton from "./component/CustomButton.tsx";
 import Swal from "sweetalert2";
-import * as validator from '../util/validator';
 import axios from "axios";
 import Cookies from 'js-cookie';
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState('');
+    const [nic, setNic] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
@@ -16,9 +15,9 @@ const Login: React.FC = () => {
     const handleInput = (e, type): void => {
         switch (type) {
 
-            case 'email':
+            case 'nic':
                 // this.setState({...this.state, email: e.target.value})
-                setEmail(e.target.value);
+                setNic(e.target.value);
                 break;
             case 'password':
                 // this.setState({...this.state, password: e.target.value})
@@ -34,15 +33,15 @@ const Login: React.FC = () => {
         // send data to backend
         const headers = {'Content-Type': 'application/json'}
         let body = {
-            email: email,
+            nic: nic,
             password: password
         }
         axios.post("http://localhost:9091/api/v1/user/auth", body, {headers: headers})
             .then(r => {
 
                 Cookies.set("token", r.data.data.accessToken);
-                Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
-                console.log("cookie", Cookies.get("token"));
+                Cookies.set("nic", r.data.data.user.nic);
+                Cookies.set("id", r.data.data.user.id);
                 navigate("/home");
 
             })
@@ -74,10 +73,10 @@ const Login: React.FC = () => {
                         <div className="form-group">
                             <Input
                                 type="text"
-                                name="email"
-                                label="Email"
+                                name="nic"
+                                label="NIC"
                                 optional={false}
-                                value={email}
+                                value={nic}
                                 callBack={handleInput}
                                 placeholder=''
                             />

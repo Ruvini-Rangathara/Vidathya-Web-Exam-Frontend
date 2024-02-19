@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 const Signup: React.FC = () => {
-    const [email, setEmail] = useState('');
+    const [nic, setNic] = useState('');
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('Student');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
+    const handleNicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNic(event.target.value);
     };
 
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,12 +27,8 @@ const Signup: React.FC = () => {
     const addUser = async () => {
         try {
             if (validateSubmission()) {
-                if(email === 'vidathyainstitute@gmail.com'){
-                    setSelectedRole('Teacher');
-                }
-
                 const newUser = {
-                    email: email, password: password, role: selectedRole,
+                    nic: nic, password: password, role: selectedRole,
                 };
 
                 console.log("user", newUser); // Log the object directly without stringify
@@ -71,13 +67,14 @@ const Signup: React.FC = () => {
     };
 
     const clearForm = () => {
-        setEmail("");
+        setNic("");
         setPassword("");
         setConfirmPassword("");
     };
 
     const validateSubmission = () => {
-        if (email && password && confirmPassword && password === confirmPassword) {
+        console.log("user : ",nic,"  ", password,"  ", confirmPassword);
+        if (nic && password && confirmPassword && password === confirmPassword) {
             return true;
         } else {
             console.log("Invalid Inputs");
@@ -102,11 +99,11 @@ const Signup: React.FC = () => {
                     <div className="col-4">
                         <div className="form-group">
                             <Input
-                                type="email"
-                                name="email"
-                                label="Email"
+                                type="text"
+                                name="nic"
+                                label="NIC"
                                 optional={false}
-                                callBack={handleEmailChange}
+                                callBack={handleNicChange}
                                 placeholder=''
                             />
                         </div>

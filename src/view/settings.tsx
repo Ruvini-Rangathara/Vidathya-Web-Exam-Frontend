@@ -5,7 +5,7 @@ import Searchbar from "./searchbar.tsx";
 import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies, {get} from 'js-cookie';
 import {useNavigate} from "react-router-dom";
 
 const Settings = () => {
@@ -53,14 +53,13 @@ const Settings = () => {
     const clearForm = () => {
         setEmail("");
         setName("");
-        setNic("");
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
     }
 
     const validateSubmission = () => {
-        if (email && name && name && nic && oldPassword && newPassword && confirmPassword) {
+        if (email && name  && nic && oldPassword && newPassword && confirmPassword) {
             if (newPassword !== confirmPassword) {
                 Swal.fire({
                     icon: "error", title: "Invalid Inputs", text: "Passwords do not match"
@@ -90,6 +89,7 @@ const Settings = () => {
         navigate('/home')
     }
     const searchUser = () => {
+        clearForm()
         const ACCESS_TOKEN = 'Bearer ' + Cookies.get("token");
         const headers = {
             'Content-Type': 'application/json',
@@ -104,10 +104,17 @@ const Settings = () => {
 
                         setEmail(userData.email);
                         setName(userData.name);
-                        setNic(userData.nic);
+                        console.log('nic : ', userData.nic)
+                        console.log('email : ', userData.email)
+                        console.log('name : ', userData.name)
+                        console.log('role : ', userData.role)
 
-                        setEnable(true);
-
+                        //check name null
+                        if (userData.name === null || userData.email === null) {
+                            Swal.fire({
+                                icon: "error", title: "Sorry!", text: "Please Fill Your Data."
+                            });
+                        }
                     } else {
                         console.log('response.data ')
                         console.log("No user data found in response.");
@@ -164,12 +171,18 @@ const Settings = () => {
             'Content-Type': 'application/json',
             'Authorization': ACCESS_TOKEN
         }
+        // console.log("token : ", ACCESS_TOKEN)
+        let role  = 'Student';
+        if(email === 'vidathyainstitute@gmail.com'){
+            role = 'Teacher';
+        }
 
-        console.log("token : ", ACCESS_TOKEN)
         const user = {
+            id: Cookies.get("id"),
             email: email,
             name: name,
             nic: nic,
+            role: role,
             password: newPassword,
         };
         console.log("user", user);
@@ -214,13 +227,13 @@ const Settings = () => {
                     className={'w-[60%] h-[80%] justify-around bg-[white] rounded-2xl shadow-md p-8 mx-auto'}>
                     <div className={'flex w-[25vw] m-auto '}>
                         <Input
-                            type="email"
-                            name="email"
+                            type="text"
+                            name="nic"
                             label=''
                             optional={true}
-                            value={email}
+                            value={nic}
                             callBack={handleInputs}
-                            placeholder='Email Address'
+                            placeholder='Your NIC No'
                             onKeyDown={handleKeyPress}
                         />
                         <button className={'bg-[#5A294C] text-white rounded mt-2 h-6 px-2 ml-4'}
@@ -248,11 +261,11 @@ const Settings = () => {
                             <div className="col-6">
                                 <div className="form-group">
                                     <Input
-                                        type="text"
-                                        name="nic"
-                                        label="NIC"
+                                        type="email"
+                                        name="email"
+                                        label="Email"
                                         optional={false}
-                                        value={nic}
+                                        value={email}
                                         callBack={handleInputs}
                                         placeholder=''
                                     />
