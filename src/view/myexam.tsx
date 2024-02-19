@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Searchbar from "./searchbar.tsx";
+import {useEffect, useState} from "react";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -31,26 +34,52 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-function createData(
-    id: number,
-    title: string,
-    time: number,
-    score: number
-) {
-    return {id, title,time, score};
-}
-
-const rows = [
-    createData(1,'Java', 60,80),
-    createData(1,'Java', 60,80),
-    createData(1,'Java', 60,80),
-    createData(1,'Java', 60,80),
-    createData(1,'Java', 60,80),
-    createData(1,'Java', 60,80),
-];
-
-
 const MyExam = () => {
+    const [myExam, setMyExam] = useState([]);
+
+    useEffect(() => {
+        loadMyExams();
+    }, []);
+
+    function createData(
+        id: number,
+        subject: string,
+        time: number,
+        score: number
+    ) {
+        return {id, subject, time, score};
+    }
+
+    const loadMyExams = () => {
+        const nic = Cookies.get("nic");
+
+        fetch("http://localhost:9090/exam/api/v1/myexam/getAll/" + nic)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            })
+            .then(data => {
+                console.log("Data : ", JSON.stringify(data));
+
+                const myExamData = data.content.map(myExam =>
+                    createData(myExam.id, myExam.subject, myExam.time, myExam.score));
+                setMyExam(myExamData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Sorry!",
+                    text: "Something went wrong. Please try again."
+                });
+            });
+    };
+
+
+
     return (
         <div>
             <Navbar/>
@@ -64,19 +93,19 @@ const MyExam = () => {
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ID</StyledTableCell>
+                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp; ID</StyledTableCell>
                                     <StyledTableCell>Title</StyledTableCell>
                                     <StyledTableCell>Duration</StyledTableCell>
                                     <StyledTableCell>Score</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
+                                {myExam.map((row) => (
                                     <StyledTableRow key={row.id}>
-                                        <StyledTableCell component="th" scope="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <StyledTableCell component="th" scope="row">&nbsp;&nbsp;&nbsp;&nbsp;
                                             {row.id}
                                         </StyledTableCell>
-                                        <StyledTableCell>{row.title}</StyledTableCell>
+                                        <StyledTableCell>{row.subject}</StyledTableCell>
                                         <StyledTableCell>{row.time} min</StyledTableCell>
                                         <StyledTableCell>{row.score}</StyledTableCell>
                                     </StyledTableRow>

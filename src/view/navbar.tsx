@@ -11,15 +11,13 @@ const Navbar = () => {
         <div>
             <div className={' h-[100%] w-[17%] fixed top-0 left-0 z-10 bg-[#F9C6EA] p-4 shadow-md '}>
                 <div className={'flex flex-col'}>
-                    <div className={'flex flex-col items-center'}>
+                    <div className={'flex flex-col items-center mb-8'}>
                         <img src={'public/instituteLogo2.png'} alt={'vidathya'} className={'w-36 h-20'}/>
-                        <label className={'mt-2 text-[#5A294C] text-center font-bold text-xs'}>Vidathya Higher Education
+                        <label className={'mt-2 text-[#5A294C] text-center text-xs'}>Vidathya Higher Education
                             Centre</label>
                     </div>
 
                     <div className={'pl-4'}>
-                        <hr className={'w-[80%] mb-8 pl-2'}/>
-
                         <Link to={'/home'}>
                             <div className={'flex items-center mb-4'}>
                                 <MdSpaceDashboard className={'w-6 h-6'}/>
