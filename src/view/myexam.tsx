@@ -62,8 +62,6 @@ const MyExam = () => {
                 }
             })
             .then(data => {
-                console.log("Data : ", JSON.stringify(data));
-
                 const myExamData = data.content.map(myExam =>
                     createData(myExam.id, myExam.subject, myExam.time, myExam.score));
                 setMyExam(myExamData);
