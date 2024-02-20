@@ -8,6 +8,7 @@ import About from "./view/about.tsx";
 import Teacher from "./view/teacher.tsx";
 import Exam from "./view/exam.tsx";
 import MyExam from "./view/myexam.tsx";
+import Paper from "./view/paper.tsx";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/teacher" element={<Teacher/>}/>
                 <Route path="/myexam" element={<MyExam/>}/>
                 <Route path="/exam" element={<Exam/>}/>
+                <Route path="/paper/:id" element={<Paper/>}/>
             </Routes>
         </BrowserRouter>
 

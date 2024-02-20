@@ -1,16 +1,72 @@
 import Navbar from "./navbar.tsx";
 import Searchbar from "./searchbar.tsx";
-import React, { useState } from "react";
-import { Button, Pagination } from "@nextui-org/react";
+import React, {useEffect, useState} from "react";
+import {Button, Pagination} from "@nextui-org/react";
+import {useParams} from "react-router-dom";
 
 const Paper = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [question, setQuestion] = useState('');
+    const [title, setTitle] = useState('');
+    const [duration, setDuration] = useState('');
+    const [questions, setQuestions] = useState([]);
+    const [subject, setSubject] = useState('');
+    const [qCount, setQCount] = useState(0);
 
-    const qCount = 20;
+    const [question, setQuestion] = useState('');
+    const [option1, setOption1] = useState('');
+    const [option2, setOption2] = useState('');
+    const [option3, setOption3] = useState('');
+    const [option4, setOption4] = useState('');
+
+    const [answer, setAnswer] = useState('');
+
+    const {id} = useParams();
+
+    useEffect(() => {
+        console.log("Paper id of paper : ", id);
+        loadPaper();
+    }, []);
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const loadPaper = () => {
+        fetch(`http://localhost:9090/exam/api/v1/paper/get/${id}`)
+            .then(r => {
+                if (r.status === 200) {
+                    r.json().then(data => {
+                        const content = data.content;
+                        setTitle(content.title);
+                        setDuration(content.duration);
+                        setQuestions(content.questions);
+                        setSubject(content.subject);
+                        setQCount(content.questions.length);
+
+                        setQuestion(content.questions[id - 1].question);
+                        setOption1(content.questions[id - 1].option1);
+                        setOption2(content.questions[id - 1].option2);
+                        setOption3(content.questions[id - 1].option3);
+                        setOption4(content.questions[id - 1].option4);
+
+                        setAnswer(content.questions[id - 1].answer);
+                    });
+                } else {
+                    console.log("Error : ", r);
+                }
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        setQuestion("loream "+page);
+        setQuestion(questions[page - 1].question);
+
+        setOption1(questions[page - 1].option1);
+        setOption2(questions[page - 1].option2);
+        setOption3(questions[page - 1].option3);
+        setOption4(questions[page - 1].option4);
+
+        setAnswer(questions[page - 1].answer);
 
 
     };
@@ -28,7 +84,7 @@ const Paper = () => {
                         width: "30px",
                         height: "30px",
                         backgroundColor: currentPage === i ? "#5A294C" : "white",
-                        borderRadius:"20px"
+                        borderRadius: "20px"
                     }}
                     onPress={() => handlePageChange(i)}
                 >
@@ -41,41 +97,43 @@ const Paper = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar/>
             <div className={'w-[83%] h-screen top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
-                <Searchbar />
+                <Searchbar/>
                 <div className={'w-[85%] h-[85%] flex flex-col mt-2 bg-[white] rounded-2xl shadow-sm p-8 pt-4 mx-auto'}>
 
-                    <span className={'text-center text-xl text-[#5A294C]'}>Exam Title</span>
-                    <span className={'text-end text-lg '}>Duration - 60min</span>
+                    <div className={'flex justify-between'}>
+                        <span className={'text-center w-full text-xl text-[#5A294C]'}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {title}</span>
+                        <span>
+                            <button className={'px-2 py-1 bg-[#F5F5F5] text-[gray] rounded-full'}> X </button>
+                        </span>
+                    </div>
+
+
+                    <span className={'text-center text-lg text-[#5A294C]'}>{subject}</span>
+                    <span className={'text-end text-lg '}>Duration - {duration} min</span>
 
                     <div className={'w-[90%] h-[60%] bg-[white] border rounded-xl m-auto justify-center pt-6 px-4'}
-                         style={{ overflow: 'auto' }}
+                         style={{overflow: 'auto'}}
                     >
-                        <p className={'text-center'}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Accusamus accusantium animi aut, earum enim error esse et
-                            explicabo fugiat harum id magnam optio pariatur quidem
-                            repellendus, tenetur unde, veritatis voluptates.
-                        </p>
+                        <p className={'text-center'}>{question}</p>
 
-                        <p id={'q'}> {question}</p>
-
-                        <div className={'flex flex-col gap-3 mt-4 mb-8 justify-center items-center'}>
+                        <div className={'flex flex-col gap-3 mt-4 mb-8 items-start'}>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option1" name="option" value="option1"/>
-                                <label htmlFor="option1">Option 1 : veritatis voluptates. </label>
+                                <label htmlFor="option1">Option 1 : {option1} </label>
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option2" name="option" value="option2"/>
-                                <label htmlFor="option2">Option 2 : veritatis voluptates.</label>
+                                <label htmlFor="option2">Option 2 : {option2}</label>
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option3" name="option" value="option3"/>
-                                <label htmlFor="option3">Option 3 :  veritatis voluptates.</label>
+                                <label htmlFor="option3">Option 3 : {option3}</label>
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option4" name="option" value="option4"/>
-                                <label htmlFor="option4">Option 4 : veritatis voluptates.</label>
+                                <label htmlFor="option4">Option 4 : {option4}</label>
                             </div>
                         </div>
 
@@ -92,8 +150,11 @@ const Paper = () => {
                         {/*    onChange={handlePageChange}*/}
                         {/*/>*/}
 
-                        <div className={'flex justify-between mx-4'}>
-                            {renderPaginationNumbers()}
+
+                        <div className={'w-full flex justify-center items-center'}>
+                            <div className={'flex mx-12 gap-8'} style={{justifyContent: 'flex-start'}}>
+                                {renderPaginationNumbers()}
+                            </div>
                         </div>
 
 

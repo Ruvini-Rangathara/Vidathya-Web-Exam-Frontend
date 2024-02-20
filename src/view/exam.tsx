@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Searchbar from "./searchbar.tsx";
 import Swal from "sweetalert2";
+import {useNavigate} from "react-router-dom";
 
 interface GridItemProps {
     id: number;
@@ -14,85 +15,31 @@ interface GridItemProps {
     time: string;
 }
 
-// Sample data for GridItem
-// const data: GridItemProps[] = [
-//     {
-//         id: 1,
-//         title: 'Java',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 2,
-//         title: 'Python',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 3,
-//         title: 'C++',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 4,
-//         title: 'C#',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 5,
-//         title: 'JavaScript',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 6,
-//         title: 'HTML',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 7,
-//         title: 'CSS',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-//     {
-//         id: 8,
-//         title: 'ReactJS',
-//         description: 'ipsum dolor sit amet,consectetur adipisicing elit. ' +
-//             'Ea eos ex ipsaipsum iure maiores mollitia nisi nostrum perferendis',
-//         time: '60min'
-//     },
-// ];
 
-const handleItemClick = (id: number) => {
-    console.log('GridItem clicked ', id);
 
-};
+
 
 function createData(id,title, description, subject, time) {
     return { id,title, description, subject, time };
 }
 
 const Exam = () => {
+    const navigate = useNavigate();
+
+    const handleItemClick = (id: number) => {
+        console.log('GridItem clicked ', id);
+        navigate(`/paper/${id}`);
+
+    };
 
     const loadExams = () => {
         fetch("http://localhost:9090/exam/api/v1/paper/getAll")
             .then(r => {
-
                 if (r.status === 200) {
                     r.json().then(data => {
                         const content = data.content;
                         console.log("Data : ",data.content)
+
                         const examData = content.map(exam =>
                             createData(exam.id, exam.title, exam.description, exam.subject, exam.time));
                         setExams(examData);
