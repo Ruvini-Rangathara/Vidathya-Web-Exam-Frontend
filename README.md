@@ -13,7 +13,6 @@ Welcome to the Vidathya Higher Education Center Exam Web Application frontend pr
 ## Tech Stack
 
 - **React**: Frontend framework for building user interfaces.
-- **Express**: Backend framework for handling API requests.
 - **Tailwind CSS**: Utility-first CSS framework for styling.
 - **TypeScript**: Superset of JavaScript with static typing.
 - **Vite**: Frontend build tool for fast development.
