@@ -170,8 +170,10 @@ const Dashboard = () => {
                     <div className={'w-[45%] h-[90%] bg-[white] rounded-2xl shadow-md pt-6'}>
                         <Chart/>
                     </div>
-                    <div className={'w-[45%] h-[90%] bg-[white] rounded-2xl shadow-md'}>
-
+                    <div className={'w-[45%] h-[90%] bg-[white] rounded-2xl shadow-md px-10 py-20'}>
+                        <p className={'text-center'}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Deserunt odit unde vel! Earum enim esse eum fugiat laudantium officia sed.
+                            Expedita hic illo itaque maxime quam rerum similique soluta veritatis!</p>
                     </div>
                 </div>
 

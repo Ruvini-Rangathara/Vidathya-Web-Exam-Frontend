@@ -139,7 +139,7 @@ const Paper = () => {
 
         //iterate through the questions and compare the answers
         let score = 0;
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < paperArray.questions.length; i++) {
             let ans ;
             if(selectedAnswers[i] === 'option1'){
                 ans= paperArray.questions[i].option1;
@@ -159,7 +159,8 @@ const Paper = () => {
             }
         }
 
-        return (score / 10) * 100;
+        console.log("length : ", paperArray.questions.length)
+        return (score / paperArray.questions.length) * 100;
     }
 
 
@@ -174,7 +175,20 @@ const Paper = () => {
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                addToMyExam(score);
+                if(score===0){
+                    Swal.fire({
+                        title: 'You have not answered any questions!',
+                        text:  'Please try again.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate('/exam');
+                        }
+                    });
+                }else{
+                    addToMyExam(score);
+                }
                 navigate('/exam');
             }
         });
@@ -283,7 +297,7 @@ const Paper = () => {
                         </span>
                     </div>
 
-                    <span className={'text-center text-lg text-[#5A294C]'}>
+                    <span className={'text-center text-lg text-[gray]'}>
                         {subject} ( Duration - {duration} min)
                     </span>
 
@@ -293,7 +307,7 @@ const Paper = () => {
                             <h2>End Time: {formatTime(endTime)}</h2>
                         </div>
                         <span
-                            className={'rounded-md h-8 text-center px-2 bg-[#5A294C] text-lg '}>Remaining Time: {formatRemainingTime()}</span>
+                            className={'rounded-md h-8 text-center px-2 text-[#5A294C] bg-[#F9C6EA] text-lg '}>Remaining Time: {formatRemainingTime()}</span>
                     </div>
 
                     <div
@@ -305,6 +319,7 @@ const Paper = () => {
                         <div className={'flex flex-col mx-auto gap-3 mt-4 mb-8 items-start'}>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option1" name="option" value="option1"
+                                       className={'w-4 h-4'}
                                        checked={selectedOption === "option1"}
                                        onChange={handleOptionChange}
                                 />
@@ -312,6 +327,7 @@ const Paper = () => {
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option2" name="option" value="option2"
+                                       className={'w-4 h-4'}
                                        checked={selectedOption === "option2"}
                                        onChange={handleOptionChange}
                                 />
@@ -319,6 +335,7 @@ const Paper = () => {
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option3" name="option" value="option3"
+                                       className={'w-4 h-4'}
                                        checked={selectedOption === "option3"}
                                        onChange={handleOptionChange}
                                 />
@@ -326,6 +343,7 @@ const Paper = () => {
                             </div>
                             <div className={'flex gap-3'}>
                                 <input type="radio" id="option4" name="option" value="option4"
+                                       className={'w-4 h-4'}
                                        checked={selectedOption === "option4"}
                                        onChange={handleOptionChange}
                                 />

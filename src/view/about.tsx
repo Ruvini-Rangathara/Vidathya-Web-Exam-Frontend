@@ -33,7 +33,7 @@ const About = () => {
 
                 <div
                     className={'w-[95%] h-[55vh] flex bg-[white] justify-between rounded-b-2xl  shadow-md mt-0 m-auto'}>
-                    <div className={'flex flex-col px-12 justify-center ml-6 text-[14px]'}>
+                    <div className={'flex flex-col px-12 justify-center ml-10 text-[14px]'}>
                         <div className={'flex '}>
                             <img src={'src/assets/whatsapp.png'} alt={'whatsapp'} className={'w-6 h-6 mb-4'}/>
                             <label className={'ml-6'}>+9478 66 28 481 / +9478 66 28 482 </label>
@@ -59,8 +59,8 @@ const About = () => {
 
                     <div className={'w-[50%] h-[100%] bg-[white] rounded-b-2xl p-8'}
                          style={{
-                             backgroundImage: 'url(src/assets/bg-img2.png)',
-                             backgroundSize: "cover",
+                             backgroundImage: 'url(src/assets/bg3.png)',
+                             backgroundSize: "contain",
                              backgroundPosition: 'center',
                          }}>
                     </div>

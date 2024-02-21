@@ -1,6 +1,7 @@
 import {MdSpaceDashboard} from "react-icons/md";
 import {PiStudentFill} from "react-icons/pi";
 import {PiChalkboardTeacherFill} from "react-icons/pi";
+import { RiLogoutCircleLine } from "react-icons/ri";
 import {PiExamFill} from "react-icons/pi";
 import {MdSubject} from "react-icons/md";
 import {MdSettings} from "react-icons/md";
@@ -12,7 +13,7 @@ const Navbar = () => {
             <div className={' h-[100%] w-[17%] fixed top-0 left-0 z-10 bg-[#F9C6EA] p-4 shadow-md '}>
                 <div className={'flex flex-col'}>
                     <div className={'flex flex-col items-center mb-8'}>
-                        <img src={'public/instituteLogo2.png'} alt={'vidathya'} className={'w-36 h-20'}/>
+                        <img src={'src/assets/instituteLogo2.png'} alt={'vidathya'} className={'w-38 h-20'}/>
                         <label className={'mt-2 text-[#5A294C] text-center text-xs'}>Vidathya Higher Education
                             Centre</label>
                     </div>
@@ -67,6 +68,13 @@ const Navbar = () => {
                                 Aliquam blanditiis consequatur, dolor dolore dolorem,</p>
                         </div>
                     </div>
+
+                    <Link to={'/login'}>
+                        <div className={'h-14 flex mt-10 cursor-pointer'}>
+                            <RiLogoutCircleLine className={'w-6 h-6'}/>
+                            <label className={'ml-4 cursor-pointer'}>Logout</label>
+                        </div>
+                    </Link>
 
                 </div>
 
