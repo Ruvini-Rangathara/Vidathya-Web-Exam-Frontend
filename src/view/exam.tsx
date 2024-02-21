@@ -16,11 +16,8 @@ interface GridItemProps {
 }
 
 
-
-
-
-function createData(id,title, description, subject, time) {
-    return { id,title, description, subject, time };
+function createData(id, title, description, subject, time) {
+    return {id, title, description, subject, time};
 }
 
 const Exam = () => {
@@ -29,7 +26,6 @@ const Exam = () => {
     const handleItemClick = (id: number) => {
         console.log('GridItem clicked ', id);
         navigate(`/paper/${id}`);
-
     };
 
     const loadExams = () => {
@@ -38,14 +34,10 @@ const Exam = () => {
                 if (r.status === 200) {
                     r.json().then(data => {
                         const content = data.content;
-                        console.log("Data : ",data.content)
 
                         const examData = content.map(exam =>
                             createData(exam.id, exam.title, exam.description, exam.subject, exam.time));
                         setExams(examData);
-                        {exams.map((row) => (
-                            console.log("Data row  : ",JSON.stringify(row))
-                        ))}
                     });
                 } else {
                     Swal.fire({
@@ -64,16 +56,24 @@ const Exam = () => {
         loadExams();
     }, []);
 
+    const addExam = () => {
+        console.log('add click')
+    }
 
     return (
         <>
             <Navbar/>
-            <div className={'w-[83%] h-screen top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
+            <div className={'w-[83%] h-scroll top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
                 <Searchbar/>
-                <h1 className={'text-[2rem] text-[#5A294C] ml-12 mb-6'}>Exam</h1>
+
+                <span className={'flex justify-between mr-12'}>
+                    <h1 className={'text-[2rem] text-[#5A294C] ml-12 mb-6'}>Exam</h1>
+                    <button className={'w-8 h-8 mt-2 bg-[#F5F5F5] text-[gray] rounded-full'}
+                                onClick={addExam}> + </button>
+                </span>
                 <div className={'w-[100%] '}>
-                    <Box sx={{ width: '80%', margin:'auto'}}>
-                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Box sx={{width: '80%', margin: 'auto'}}>
+                        <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                             {exams && exams.map((item: GridItemProps) => (
                                 <Grid item xs={6} key={item.id}>
                                     <GridItem

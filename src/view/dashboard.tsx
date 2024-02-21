@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 
 
-
 const Dashboard = () => {
     const [studentCount, setStudentCount] = useState(0);
     const [teacherCount, setTeacherCount] = useState(0);
@@ -31,7 +30,6 @@ const Dashboard = () => {
 
     useEffect(() => {
     }, [myExamCount]);
-
 
 
     const loadTeacherCount = () => {
@@ -87,7 +85,7 @@ const Dashboard = () => {
 
     const loadMyExamCount = () => {
         const nic = Cookies.get("nic");
-        fetch("http://localhost:9090/exam/api/v1/myexam/count/"+nic)
+        fetch("http://localhost:9090/exam/api/v1/myexam/count/" + nic)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -118,9 +116,7 @@ const Dashboard = () => {
                 <div className={'text-[#772460] mx-auto w-[80%] h-[15vh] flex justify-center items-center'}>
                     <div
                         className={'border-l-[4px] border-l-[#5A294C] w-[18%] h-[13vh] shadow-xl bg-[#E8D2E2] mx-auto rounded-2xl shadow-m  flex flex-col justify-center items-center'}>
-                        <label className={'text-[21px] '}>
-                            {studentCount}
-                        </label>
+                        <label className={'text-[21px] '}>{studentCount}</label>
                         <label className={'text-[25px]'}>Students</label>
                     </div>
                     <div
