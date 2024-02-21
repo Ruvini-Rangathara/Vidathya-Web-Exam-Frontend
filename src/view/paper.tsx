@@ -159,7 +159,6 @@ const Paper = () => {
             }
         }
 
-        console.log("length : ", paperArray.questions.length)
         return (score / paperArray.questions.length) * 100;
     }
 
@@ -207,6 +206,7 @@ const Paper = () => {
 
         axios.post('http://localhost:9090/exam/api/v1/myexam/add', exam)
             .then(response => {
+                console.log("response : ", response)
                 if (response.status === 200) {
                     console.log("Exam added to my exams");
                 }

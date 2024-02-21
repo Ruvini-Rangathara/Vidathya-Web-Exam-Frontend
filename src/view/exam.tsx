@@ -63,7 +63,7 @@ const Exam = () => {
     return (
         <>
             <Navbar/>
-            <div className={'w-[83%] h-scroll pb-12 top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
+            <div className={'w-[83%] h-screen pb-12 top-0 ml-[17%] bg-[#E8D2E2] flex flex-col'}>
                 <Searchbar/>
 
                 <span className={'flex justify-between mr-12'}>

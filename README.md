@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Vidathya Higher Education Center Exam Web Application (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Vidathya Higher Education Center Exam Web Application frontend project! This project is implemented using React, Express, Tailwind CSS, TypeScript, and Vite. It serves as the frontend interface for managing exams and users for the online exam platform. Students can register, attempt exams online, and view their marks. Additionally, users can update their details, view teachers of the institute, and access various statistics via the dashboard.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Registration and Authentication**: Users can register and log in using JWT token authentication.
+- **Exam Attempt Interface**: Students can attempt exams online with a timer that calculates the time taken. Once the time is up, the exam is automatically closed.
+- **Dashboard**: Displays statistics such as registered student count, teacher count, exam count, and done exams count by relevant users.
+- **User Profile Management**: Users can update their details and view their done exams and marks.
+- **Teacher Directory**: Users can view the teachers of the institute.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**: Frontend framework for building user interfaces.
+- **Express**: Backend framework for handling API requests.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **TypeScript**: Superset of JavaScript with static typing.
+- **Vite**: Frontend build tool for fast development.
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Usage
+
+1. Clone the backend repository:
+
+```bash
+git clone https://github.com/Ruvini-Rangathara/Vidathya-Web-Exam-Backend.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Clone the frontend repository:
+
+```bash
+git clone https://github.com/Ruvini-Rangathara/Vidathya-Web-Exam-Frontend.git

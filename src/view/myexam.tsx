@@ -39,6 +39,7 @@ const MyExam = () => {
 
     useEffect(() => {
         loadMyExams();
+        console.log("my exam : ", myExam)
     }, []);
 
     function createData(
@@ -71,7 +72,7 @@ const MyExam = () => {
                 Swal.fire({
                     icon: "error",
                     title: "Sorry!",
-                    text: "Something went wrong. Please try again."
+                    text: "There is no on score board!."
                 });
             });
     };
@@ -91,7 +92,7 @@ const MyExam = () => {
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>&nbsp;&nbsp;&nbsp;&nbsp; ID</StyledTableCell>
+                                    <StyledTableCell>My Exam ID</StyledTableCell>
                                     <StyledTableCell>Title</StyledTableCell>
                                     <StyledTableCell>Duration</StyledTableCell>
                                     <StyledTableCell>Score</StyledTableCell>
