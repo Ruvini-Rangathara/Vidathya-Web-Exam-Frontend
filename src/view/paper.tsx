@@ -1,11 +1,14 @@
 import Navbar from "./navbar.tsx";
 import Searchbar from "./searchbar.tsx";
 import React, {useEffect, useState} from "react";
-import {Button, Pagination} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import {useNavigate, useParams} from "react-router-dom";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Paper = () => {
+    let paperArray ;
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -28,6 +31,20 @@ const Paper = () => {
     const [startTime, setStartTime] = useState(null); // Start time of the paper
     const [endTime, setEndTime] = useState(null);
     const [remainingTime, setRemainingTime] = useState(duration * 60000);
+
+
+    const [correctAnswers, setCorrectAnswers] = useState([]);
+    const [selectedAnswers, setSelectedAnswers] = useState([]);
+
+
+    const [selectedOption, setSelectedOption] = useState("");
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+        const cPage = Cookies.get("cPage");
+        selectedAnswers[cPage-1] = event.target.value;
+    };
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -52,7 +69,8 @@ const Paper = () => {
 
 
     useEffect(() => {
-        console.log("Paper id of paper : ", id);
+        Cookies.set("cPage",1)
+        Cookies.set("previousQ",1)
         loadPaper();
     }, []);
 
@@ -62,11 +80,16 @@ const Paper = () => {
                 if (r.status === 200) {
                     r.json().then(data => {
                         const content = data.content;
+                        paperArray = content;
+
                         setTitle(content.title);
                         setDuration(content.time);
 
                         setQuestions(content.questions);
                         setSubject(content.subject);
+
+                        setCorrectAnswers(content.questions.map(question => question.answer));
+
                         setQCount(content.questions.length);
 
                         setQuestion(content.questions[id - 1].question);
@@ -77,7 +100,6 @@ const Paper = () => {
 
                         setAnswer(content.questions[id - 1].answer);
 
-                        // Calculate start and end time based on duration
                         const now = new Date();
                         setStartTime(now);
                         const end = new Date(now.getTime() + content.time * 60000);
@@ -96,22 +118,90 @@ const Paper = () => {
             });
     }
 
+    const calculateMarks = () =>{
+        // console.log("selected answers : //////////////////////////////////////////" )
+        // console.log(paperArray)
+        //
+        // console.log("selected answers : ========================================" )
+        // console.log("selectedAnswers : ",selectedAnswers)
+        //
+        // console.log("paper array : //////////////////////////////////////////" )
+        // console.log(paperArray.description); // "Test your Java programming skills with this quiz."
+        // console.log(paperArray.id); // 9
+        // console.log(paperArray.nic); // "200076900989"
+        // console.log(paperArray.subject); // "Java Test"
+        // console.log(paperArray.time); // 1
+        // console.log(paperArray.title); // "Java Programming Quiz 1min"
+        //
+        // const questionIndex = 0; // Index of the question you want to access
+        // console.log(paperArray.questions[questionIndex].question); // "Which keyword is used to define a constant in Java?"
+        // console.log(paperArray.questions[questionIndex].answer);
+
+        //iterate through the questions and compare the answers
+        let score = 0;
+        for (let i = 0; i < 10; i++) {
+            let ans ;
+            if(selectedAnswers[i] === 'option1'){
+                ans= paperArray.questions[i].option1;
+            }else if(selectedAnswers[i] === 'option2'){
+                ans= paperArray.questions[i].option2;
+            }else if(selectedAnswers[i] === 'option3'){
+                ans= paperArray.questions[i].option3;
+            }else if(selectedAnswers[i] === 'option4'){
+                ans= paperArray.questions[i].option4;
+            }
+
+            // console.log("Answer : "+(i+1)+" "+ans)
+            // console.log("Correct Answer : "+(i+1)+" "+paperArray.questions[i].answer)
+
+            if (ans === paperArray.questions[i].answer) {
+                score++;
+            }
+        }
+
+        return (score / 10) * 100;
+    }
+
+
+
     const finishExam = () => {
-        // Show a Swal alert
+        const score = calculateMarks();
+
         Swal.fire({
             title: 'Exam Completed!',
-            text: 'Press OK to continue.',
+            text:  'Your Score: '+score,
             icon: 'success',
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Navigate to the exam page after the alert is closed
+                addToMyExam(score);
                 navigate('/exam');
             }
         });
 
     };
 
+    const addToMyExam = (score) => {
+        const nic = Cookies.get("nic");
+        const exam = {
+            "paperId": paperArray.id,
+            "subject": paperArray.subject,
+            "time": paperArray.time,
+            "score": score,
+            "nic": nic
+        };
+
+        axios.post('http://localhost:9090/exam/api/v1/myexam/add', exam)
+            .then(response => {
+                if (response.status === 200) {
+                    console.log("Exam added to my exams");
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+    }
 
     const formatTime = (time) => {
         return time ? time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) : '';
@@ -119,6 +209,9 @@ const Paper = () => {
 
 
     const handlePageChange = (page) => {
+        // selectedAnswers[Cookies.get("cPage")-1] = selectedOption;
+        Cookies.set("cPage",page)
+
         setCurrentPage(page);
         setQuestion(questions[page - 1].question);
 
@@ -128,6 +221,10 @@ const Paper = () => {
         setOption4(questions[page - 1].option4);
 
         setAnswer(questions[page - 1].answer);
+
+        Cookies.set("previousQ", page);
+        setSelectedOption('');
+
     };
 
     const renderPaginationNumbers = () => {
@@ -156,7 +253,6 @@ const Paper = () => {
 
     const closeForm = () => {
         navigate('/exam')
-        console.log("close form")
     }
 
     const formatRemainingTime = () => {
@@ -205,21 +301,34 @@ const Paper = () => {
                         style={{overflow: 'auto'}}
                     >
                         <p className={'text-center mb-6'}>{question}</p>
+
                         <div className={'flex flex-col mx-auto gap-3 mt-4 mb-8 items-start'}>
                             <div className={'flex gap-3'}>
-                                <input type="radio" id="option1" name="option" value="option1"/>
+                                <input type="radio" id="option1" name="option" value="option1"
+                                       checked={selectedOption === "option1"}
+                                       onChange={handleOptionChange}
+                                />
                                 <label htmlFor="option1">Option 1 : {option1} </label>
                             </div>
                             <div className={'flex gap-3'}>
-                                <input type="radio" id="option2" name="option" value="option2"/>
+                                <input type="radio" id="option2" name="option" value="option2"
+                                       checked={selectedOption === "option2"}
+                                       onChange={handleOptionChange}
+                                />
                                 <label htmlFor="option2">Option 2 : {option2}</label>
                             </div>
                             <div className={'flex gap-3'}>
-                                <input type="radio" id="option3" name="option" value="option3"/>
+                                <input type="radio" id="option3" name="option" value="option3"
+                                       checked={selectedOption === "option3"}
+                                       onChange={handleOptionChange}
+                                />
                                 <label htmlFor="option3">Option 3 : {option3}</label>
                             </div>
                             <div className={'flex gap-3'}>
-                                <input type="radio" id="option4" name="option" value="option4"/>
+                                <input type="radio" id="option4" name="option" value="option4"
+                                       checked={selectedOption === "option4"}
+                                       onChange={handleOptionChange}
+                                />
                                 <label htmlFor="option4">Option 4 : {option4}</label>
                             </div>
                         </div>
